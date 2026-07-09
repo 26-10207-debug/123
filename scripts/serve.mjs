@@ -1,0 +1,3 @@
+import http from 'node:http';import fs from 'node:fs';import path from 'node:path';
+const root=process.cwd(), port=process.env.PORT||5173;
+http.createServer((req,res)=>{const url=req.url==='/'?'/index.html':req.url.split('?')[0];const file=path.join(root,url);if(!file.startsWith(root)){res.writeHead(403).end();return}fs.readFile(file,(e,d)=>{if(e){res.writeHead(404).end('not found');return}const ext=path.extname(file);res.setHeader('content-type',ext==='.css'?'text/css':ext==='.js'?'text/javascript':'text/html');res.end(d)})}).listen(port,()=>console.log(`DOHWAJI running http://localhost:${port}`));
